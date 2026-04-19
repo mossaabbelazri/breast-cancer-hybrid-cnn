@@ -17,9 +17,31 @@ Le système utilise un **CNN hybride** pour analyser les images et une base de d
 
 ---
 
+## 📂 Dataset
+
+Le projet utilise un dataset public disponible sur Kaggle :
+
+👉 [Accéder au dataset Mammography Dataset (INbreast, MIAS, DDSM)](https://www.kaggle.com/datasets/emiliovenegas1/mammography-dataset-from-inbreast-mias-and-ddsm?utm_source=chatgpt.com)
+
+### 📊 Description du dataset
+
+* Contient des images de mammographies :
+
+  * **Normales**
+  * **Bénignes**
+  * **Malignes**
+* Issu de plusieurs bases reconnues :
+
+  * INbreast
+  * MIAS
+  * DDSM
+* Images prétraitées et augmentées pour le Deep Learning ([kaggle.com][1])
+
+---
+
 ## 🏗️ Architecture du projet
 
-```
+```bash
 project/
 │
 ├── data/
@@ -97,16 +119,13 @@ project/
 ## 🧪 Installation
 
 ```bash
-# Cloner le projet
 git clone https://github.com/username/breast-cancer-cnn.git
 cd breast-cancer-cnn
 
-# Créer un environnement virtuel
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
 
-# Installer les dépendances
 pip install -r requirements.txt
 ```
 
@@ -136,10 +155,6 @@ python src/api/app.py
 POST /predict
 ```
 
-**Body :**
-
-* image : fichier image
-
 **Réponse :**
 
 ```json
@@ -152,8 +167,6 @@ POST /predict
 ---
 
 ## 🗄️ Base de données (MongoDB)
-
-### Exemple de document stocké :
 
 ```json
 {
@@ -178,8 +191,6 @@ POST /predict
 
 ## 🐳 Docker
 
-### Build et lancement
-
 ```bash
 docker-compose up --build
 ```
@@ -198,7 +209,6 @@ docker-compose up --build
 
 * Interface web (React)
 * Intégration de modèles pré-entraînés (ResNet, EfficientNet)
-* Détection en temps réel
 * Explicabilité (Grad-CAM)
 
 ---
@@ -212,4 +222,6 @@ Master Big Data & Intelligence Artificielle
 
 ## 📄 Licence
 
-Ce projet est à but académique.
+Projet académique
+
+[1]: https://www.kaggle.com/datasets/emiliovenegas1/mammography-dataset-from-inbreast-mias-and-ddsm?utm_source=chatgpt.com "Mammography Dataset from INbreast, MIAS, and DDSM"

@@ -1,0 +1,44 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 src --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test with pytest
+      run: |
+        # Only run if the tests folder exists
+        if [ -d "tests" ]; then pytest tests/; fi
+    ```
+
+This setup covers the Continuous Integration (CI) part perfectly. It ensures the BDI3A standards are met by keeping the codebase clean and catching bugs before anything gets merged. 
+
+Later, when you are ready for the Continuous Deployment (CD) phase, you can extend this workflow. You could easily reuse your Terraform and AWS skills to automatically provision the infrastructure and deploy your Docker containers, just like you did for your autonomous multi-agent system.
+
+Do you want to initialize the repo locally and commit these files first, or should we define the exact `requirements.txt` so the CI pipeline actually has the right libraries to install?

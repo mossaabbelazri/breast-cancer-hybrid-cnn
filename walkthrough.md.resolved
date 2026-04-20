@@ -1,0 +1,55 @@
+# Walkthrough - Mammography CNN Full Architecture
+
+I have finalized the complete project architecture as described in the [README.md](file:///c:/Users/admin/Desktop/LEONI/CNN_master/README.md).
+
+## New Project Structure
+The project is now organized as follows:
+- `data/`: Folders for raw, processed, and annotation data.
+- `models/`: Contains `best_model.keras`.
+- `notebooks/`: Contains your original training notebook.
+- `src/`: Core logic split into modules:
+  - [preprocessing/preprocess.py](file:///c:/Users/admin/Desktop/LEONI/CNN_master/src/preprocessing/preprocess.py): Shared image processing logic.
+  - [models/cnn_model.py](file:///c:/Users/admin/Desktop/LEONI/CNN_master/src/models/cnn_model.py): Model architecture definition.
+  - [database/mongo.py](file:///c:/Users/admin/Desktop/LEONI/CNN_master/src/database/mongo.py): MongoDB client for result persistence.
+  - [api/app.py](file:///c:/Users/admin/Desktop/LEONI/CNN_master/src/api/app.py): FastAPI server.
+  - [utils/helpers.py](file:///c:/Users/admin/Desktop/LEONI/CNN_master/src/utils/helpers.py): Utility functions.
+- [config/](file:///c:/Users/admin/Desktop/LEONI/CNN_master/src/utils/helpers.py#4-12): Centralized configuration in [config.yaml](file:///c:/Users/admin/Desktop/LEONI/CNN_master/config/config.yaml).
+- [Dockerfile](file:///c:/Users/admin/Desktop/LEONI/CNN_master/Dockerfile) & [docker-compose.yml](file:///c:/Users/admin/Desktop/LEONI/CNN_master/docker-compose.yml): For easy deployment.
+
+## Deployment Options
+
+### Option 1: Using Docker (Recommended)
+This will set up both the API and a MongoDB database automatically.
+```bash
+docker-compose up --build
+```
+The API will be available at `http://localhost:8000`.
+
+### Option 2: Manual Setup
+1. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Start the API**:
+   ```bash
+   uvicorn src.api.app:app --reload
+   ```
+
+## Prediction API
+The endpoint `POST /predict` now:
+1. Receives an image.
+2. Preprocesses it using the shared module.
+3. Runs inference.
+4. **Saves the result to MongoDB** (if the database is running).
+5. Returns a JSON response:
+   ```json
+   {
+     "prediction": "malignant",
+     "confidence": 0.92,
+     "all_scores": { ... }
+   }
+   ```
+
+## Testing
+- Interactive Docs: `http://localhost:8000/docs`
+- Health Check: `http://localhost:8000/` (returns model and database status)

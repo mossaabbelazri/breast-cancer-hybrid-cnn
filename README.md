@@ -105,14 +105,14 @@ project/
 
 1. **Collecte des données**
 2. **Prétraitement**
-
-   * Redimensionnement
-   * Normalisation
+   * Redimensionnement et Normalisation
    * Augmentation des données
 3. **Entraînement du modèle CNN hybride**
+   * Extraction de caractéristiques (Feature extraction) via un réseau (ex: ResNet50/VGG16)
+   * Classification finale via un algorithme ML (ex: SVM) ou des couches denses personnalisées
 4. **Évaluation du modèle**
 5. **Déploiement via API**
-6. **Stockage des résultats dans MongoDB**
+6. **Stockage des résultats (Métadonnées) et des Images (GridFS) dans MongoDB**
 
 ---
 
@@ -166,16 +166,19 @@ POST /predict
 
 ---
 
-## 🗄️ Base de données (MongoDB)
+## 🗄️ Base de données (MongoDB & GridFS)
 
+Les images médicales pouvant dépasser la limite de 16Mo de BSON, nous utilisons **GridFS** pour le stockage des fichiers bruts/prétraités, et des documents standards pour les métadonnées.
+
+**Structure d'un document (Collection `predictions`) :**
 ```json
 {
-  "image_id": "12345",
-  "prediction": "benign",
-  "confidence": 0.87,
-  "timestamp": "2026-04-19"
+  "image_id": "ObjectId('...')", // Référence vers le fichier dans GridFS
+  "prediction": "malignant",
+  "confidence": 0.92,
+  "model_version": "hybrid_v1.0",
+  "timestamp": "2026-04-20T18:17:54Z"
 }
-```
 
 ---
 

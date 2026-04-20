@@ -1,0 +1,7 @@
+tensorflow==2.15.0
+pymongo
+opencv-python
+scikit-learn
+matplotlib
+pandas
+pyyaml

@@ -35,10 +35,3 @@ jobs:
       run: |
         # Only run if the tests folder exists
         if [ -d "tests" ]; then pytest tests/; fi
-    ```
-
-This setup covers the Continuous Integration (CI) part perfectly. It ensures the BDI3A standards are met by keeping the codebase clean and catching bugs before anything gets merged. 
-
-Later, when you are ready for the Continuous Deployment (CD) phase, you can extend this workflow. You could easily reuse your Terraform and AWS skills to automatically provision the infrastructure and deploy your Docker containers, just like you did for your autonomous multi-agent system.
-
-Do you want to initialize the repo locally and commit these files first, or should we define the exact `requirements.txt` so the CI pipeline actually has the right libraries to install?

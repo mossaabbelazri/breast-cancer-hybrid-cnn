@@ -15,8 +15,9 @@ from src.preprocessing.preprocess import preprocess_image
 from src.database.mongo import MongoDBClient
 from src.models.hybrid_model import HybridCNN_SVM
 
-# Load environment variables
-load_dotenv()
+# Load environment variables absolutely from the project root
+env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.env'))
+load_dotenv(dotenv_path=env_path)
 
 # Configure Flask to use correct folders relative to this file
 app = Flask(__name__, 

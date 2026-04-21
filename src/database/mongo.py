@@ -18,7 +18,12 @@ class MongoDBClient:
         self.database_name = database_name
         
         try:
-            self.client = pymongo.MongoClient(self.uri, serverSelectionTimeoutMS=5000)
+            import certifi
+            self.client = pymongo.MongoClient(
+                self.uri, 
+                serverSelectionTimeoutMS=5000,
+                tlsCAFile=certifi.where()
+            )
             self.db = self.client[self.database_name]
             # Initialisation de GridFS pour stocker les images lourdes
             self.fs = gridfs.GridFS(self.db)

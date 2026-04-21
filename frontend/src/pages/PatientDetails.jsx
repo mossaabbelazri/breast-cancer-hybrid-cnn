@@ -52,8 +52,7 @@ export default function PatientDetails() {
 
     const filteredImages = images.filter(img => {
         if (filter === 'all') return true;
-        if (filter === 'malignant') return img.prediction === 'malignant';
-        return img.prediction !== 'malignant'; // assume benign/normal
+        return img.prediction === filter;
     });
 
     if (!patient) return <div>Loading...</div>;
@@ -78,7 +77,7 @@ export default function PatientDetails() {
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-lg font-semibold text-slate-800">Scans & Predictions</h3>
                             <div className="flex space-x-2">
-                                {['all', 'malignant', 'benign'].map(f => (
+                                {['all', 'malignant', 'benign', 'normal'].map(f => (
                                     <button
                                         key={f}
                                         onClick={() => setFilter(f)}
@@ -115,8 +114,8 @@ export default function PatientDetails() {
                                         </div>
                                     </div>
                                     <div className="p-3 bg-white">
-                                        <p className="font-semibold text-slate-800 flex justify-between">
-                                            {img.prediction === 'malignant' ? 'Malignant' : 'Benign'}
+                                        <p className="font-semibold text-slate-800 flex justify-between capitalize">
+                                            {img.prediction}
                                             <span className="text-slate-500 text-sm">{(img.confidence * 100).toFixed(1)}%</span>
                                         </p>
                                         <p className="text-xs text-slate-500 mt-1 flex items-center">

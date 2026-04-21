@@ -1,5 +1,8 @@
 env/
 node_modules/
+# Ignorer les modèles ML lourds
+models/*.pkl
+models/*.h5
 __pycache__/
 *.pyc
 .env

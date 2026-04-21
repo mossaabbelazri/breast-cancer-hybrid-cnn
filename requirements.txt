@@ -1,4 +1,5 @@
 tensorflow==2.15.0
+tensorflow==2.15.0
 pymongo
 opencv-python
 scikit-learn
@@ -8,3 +9,5 @@ numpy
 flask
 python-dotenv
 pyyaml
+joblib
+flask-cors

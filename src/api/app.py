@@ -1,14 +1,19 @@
 import os
+import sys
+
+# Ajout du dossier racine au PYTHON_PATH pour que les imports 'src.x' fonctionnent
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
 import numpy as np
 import io
 from flask import Flask, request, jsonify, send_file
-from tensorflow.keras.models import load_model
 from dotenv import load_dotenv
 from flask_cors import CORS
 
 # Internal imports
 from src.preprocessing.preprocess import preprocess_image
-from src.database.mongo import MammographyDB
+from src.database.mongo import MongoDBClient
+from src.models.hybrid_model import HybridCNN_SVM
 
 # Load environment variables
 load_dotenv()
@@ -20,16 +25,16 @@ app = Flask(__name__,
 CORS(app) # Enable CORS for all routes (important for React frontend)
 
 # Configuration from .env
-MODEL_PATH = os.getenv("MODEL_PATH", "models/best_model.keras")
+MODEL_PATH = os.getenv("MODEL_PATH", "models/hybrid_svm.pkl")
 CLASS_NAMES = ['benign', 'malignant', 'normal']
 PORT = int(os.getenv("PORT", 5000))
 HOST = os.getenv("HOST", "0.0.0.0")
 
 # Initialize components
 model = None
-db = MammographyDB(
+db = MongoDBClient(
     uri=os.getenv("MONGO_URI", "mongodb://localhost:27017/"),
-    db_name=os.getenv("DATABASE_NAME", "CNN_tumeurs")
+    database_name=os.getenv("DATABASE_NAME", "CNN_tumeurs")
 )
 
 def load_cnn_model():
@@ -38,10 +43,18 @@ def load_cnn_model():
     abs_model_path = os.path.abspath(MODEL_PATH)
     if os.path.exists(abs_model_path):
         try:
-            model = load_model(abs_model_path)
-            print(f"Model loaded successfully from {abs_model_path}")
+            # Initialisation de notre modèle Hybride (charge VGG16 en base)
+            model = HybridCNN_SVM(input_shape=(128, 128, 3))
+            # Chargement de la "tête" intelligente SVM
+            success = model.load_model(abs_model_path)
+            
+            if success:
+                print(f"Hybrid Model loaded successfully from {abs_model_path}")
+            else:
+                model = None
         except Exception as e:
             print(f"Error loading model: {e}")
+            model = None
     else:
         print(f"Model file not found at {abs_model_path}")
 
@@ -119,15 +132,18 @@ def predict():
         contents = file.read()
         processed_img = preprocess_image(contents)
         
-        # Inference
-        predictions = model.predict(processed_img)
-        predicted_class_idx = np.argmax(predictions[0])
-        confidence = float(predictions[0][predicted_class_idx])
+        # Inference avec le modèle Hybride
+        prediction_val, probabilities = model.predict_image(processed_img)
+        
+        # prediction_val est l'index de la classe (0, 1 ou 2) retourné par le SVM
+        predicted_class_idx = int(prediction_val)
+        predicted_class = CLASS_NAMES[predicted_class_idx]
+        confidence = float(probabilities[predicted_class_idx])
         
         result = {
-            "prediction": CLASS_NAMES[predicted_class_idx],
+            "prediction": predicted_class,
             "confidence": round(confidence, 4),
-            "all_scores": {CLASS_NAMES[i]: round(float(predictions[0][i]), 4) for i in range(len(CLASS_NAMES))}
+            "all_scores": {CLASS_NAMES[i]: round(float(probabilities[i]), 4) for i in range(len(CLASS_NAMES))}
         }
         
         # Save to MongoDB

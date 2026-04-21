@@ -96,7 +96,7 @@ export default function PatientDetails() {
                                 <div key={img._id} className="relative group rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                     <div className="aspect-square bg-slate-900 relative">
                                         <img
-                                            src={api.getImageUrl(img._id)}
+                                            src={api.getImageUrl(img.image_id)}
                                             alt="Scan"
                                             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                         />
@@ -180,7 +180,7 @@ export default function PatientDetails() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4" onClick={() => setSelectedImage(null)}>
                     <div className="bg-white rounded-2xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden" onClick={e => e.stopPropagation()}>
                         <div className="md:w-2/3 bg-black flex justify-center items-center p-4">
-                            <img src={api.getImageUrl(selectedImage._id)} alt="Enlarged Scan" className="max-h-[80vh] object-contain" />
+                            <img src={api.getImageUrl(selectedImage.image_id)} alt="Enlarged Scan" className="max-h-[80vh] object-contain" />
                         </div>
                         <div className="md:w-1/3 p-6 flex flex-col">
                             <div className="flex justify-between items-start mb-6">

@@ -179,6 +179,7 @@ Les images médicales pouvant dépasser la limite de 16Mo de BSON, nous utilison
   "model_version": "hybrid_v1.0",
   "timestamp": "2026-04-20T18:17:54Z"
 }
+```
 
 ---
 

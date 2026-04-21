@@ -1,13 +1,18 @@
+import os
 import pymongo
 from pymongo.errors import ConnectionFailure
 import gridfs
+from dotenv import load_dotenv
+
+# Charger les variables d'environnement depuis le fichier .env
+load_dotenv()
 
 class MongoDBClient:
-    def __init__(self, uri="mongodb://localhost:27017/", database_name="breast_cancer_db"):
+    def __init__(self, uri=None, database_name="breast_cancer_db"):
         """
         Initialise le client MongoDB et se connecte à la base de données spécifiée.
         """
-        self.uri = uri
+        self.uri = uri or os.getenv("MONGO_URI", "mongodb://localhost:27017/")
         self.database_name = database_name
         self.client = pymongo.MongoClient(self.uri)
         self.db = self.client[self.database_name]
@@ -57,3 +62,8 @@ class MongoDBClient:
         except gridfs.errors.NoFile:
             print(f"Aucune image trouvée dans GridFS pour l'ID: {file_id}")
             return None
+
+if __name__ == "__main__":
+    print("Tentative de connexion à MongoDB...")
+    client = MongoDBClient()
+    client.test_connection()

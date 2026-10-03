@@ -1,12 +1,30 @@
-env/
-node_modules/
-# Ignorer les modèles ML lourds
-models/*.pkl
-models/*.h5
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+venv/
+env/
 .env
-.pytest_cache/
-dist/
-build/
+
+# Data and Models
+data/
+models/*.h5
+models/*.pkl
+
+# Frontend Node Modules
+frontend/node_modules/
+frontend/build/
+
+# Academic & Personal Files
+*.docx
+*.pdf
+*.pptx
+*.txt
+!requirements.txt
+!README.md
+
+# IDEs and OS
+.vscode/
+.idea/
 .DS_Store
+Thumbs.db

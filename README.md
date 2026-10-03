@@ -1,231 +1,191 @@
-# 🧠 Détection et Classification des Tumeurs Mammaires par CNN Hybride avec Stockage NoSQL
+# 🧠 Breast Cancer Tumor Detection & Classification (Hybrid CNN-SVM with NoSQL)
 
-## 📌 Description du projet
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 
-Ce projet a pour objectif de développer un système intelligent basé sur le Deep Learning pour la **détection et la classification des tumeurs mammaires** à partir d’images médicales (mammographies).
+## 📌 Project Overview
 
-Le système utilise un **CNN hybride** pour analyser les images et une base de données **NoSQL (MongoDB)** pour stocker les résultats et les métadonnées.
+This project implements an intelligent Deep Learning system for the **detection and classification of breast cancer tumors** using medical imaging (mammography).
+
+The system utilizes a **Hybrid Model (CNN for feature extraction + SVM for classification)** to analyze the images with high accuracy. The backend is powered by a **NoSQL Database (MongoDB Atlas)** to securely store prediction results, patient records, and medical metadata. Additionally, the application features an **interactive React Dashboard** designed for healthcare professionals.
 
 ---
 
-## 🎯 Objectifs
+## 🎯 Key Achievements
 
-* Détecter automatiquement les tumeurs dans les images mammaires
-* Classifier les tumeurs en **bénignes** ou **malignes**
-* Stocker les résultats dans une base NoSQL
-* Fournir une API pour interagir avec le modèle
+* ✅ Automated tumor detection in mammography images.
+* ✅ Multi-class tumor classification: **Normal**, **Benign**, or **Malignant**.
+* ✅ Seamless integration of a Hybrid Model combining Deep Learning (CNN) and classical Machine Learning (SVM).
+* ✅ Scalable and flexible metadata storage using NoSQL (MongoDB).
+* ✅ Real-time inference API built with Flask/FastAPI.
+* ✅ Interactive web dashboard (React) to display patient records and predictions.
 
 ---
 
 ## 📂 Dataset
 
-Le projet utilise un dataset public disponible sur Kaggle :
+The model is trained on a robust public dataset available on Kaggle:
 
-👉 [Accéder au dataset Mammography Dataset (INbreast, MIAS, DDSM)](https://www.kaggle.com/datasets/emiliovenegas1/mammography-dataset-from-inbreast-mias-and-ddsm?utm_source=chatgpt.com)
+👉 [Mammography Dataset (INbreast, MIAS, DDSM)](https://www.kaggle.com/datasets/emiliovenegas1/mammography-dataset-from-inbreast-mias-and-ddsm)
 
-### 📊 Description du dataset
+### 📊 Dataset Details
 
-* Contient des images de mammographies :
-
-  * **Normales**
-  * **Bénignes**
-  * **Malignes**
-* Issu de plusieurs bases reconnues :
-
-  * INbreast
-  * MIAS
-  * DDSM
-* Images prétraitées et augmentées pour le Deep Learning ([kaggle.com][1])
+* Contains mammography images classified into:
+  * **Normal**
+  * **Benign**
+  * **Malignant**
+* Curated from widely recognized databases: INbreast, MIAS, and DDSM.
+* Images are pre-processed and augmented (Data Augmentation) to improve model generalization.
 
 ---
 
-## 🏗️ Architecture du projet
+## 🏗️ Architecture
 
 ```bash
 project/
 │
-├── data/
-│   ├── raw/                # Données brutes (images)
-│   ├── processed/          # Données prétraitées
-│   └── annotations/        # Labels
-│
-├── notebooks/
-│   └── exploration.ipynb   # Analyse exploratoire
-│
+├── data/                   # Raw, processed, and annotated data
+├── notebooks/              # Exploratory Data Analysis (EDA)
 ├── src/
-│   ├── preprocessing/
-│   │   └── preprocess.py   # Nettoyage & transformation
-│   │
-│   ├── models/
-│   │   ├── cnn_model.py    # CNN de base
-│   │   ├── hybrid_model.py # CNN hybride
-│   │   └── train.py        # Entraînement
-│   │
-│   ├── evaluation/
-│   │   └── metrics.py      # Accuracy, Precision, Recall
-│   │
-│   ├── database/
-│   │   └── mongo.py        # Connexion MongoDB
-│   │
-│   ├── api/
-│   │   └── app.py          # API Flask/FastAPI
-│   │
-│   └── utils/
-│       └── helpers.py      # Fonctions utilitaires
+│   ├── preprocessing/      # Data cleaning & transformations
+│   ├── models/             # Models (cnn_model.py, hybrid_model.py, train.py)
+│   ├── evaluation/         # Performance metrics
+│   ├── database/           # MongoDB connection (mongo.py)
+│   └── api/                # Flask/FastAPI backend (app.py)
 │
-├── models/                 # Modèles sauvegardés
-│   └── best_model.h5
-│
-├── config/
-│   └── config.yaml         # Paramètres du projet
-│
-├── tests/
-│   └── test_model.py
-│
+├── frontend/               # React Web Application (Dashboard, PatientDetails)
+├── models/                 # Saved models (.h5, .pkl)
+├── config/                 # Project configurations
+├── tests/                  # Unit and integration tests
 ├── requirements.txt
-├── Dockerfile
 ├── docker-compose.yml
 └── README.md
 ```
 
 ---
 
-## ⚙️ Technologies utilisées
+## ⚙️ Technology Stack
 
-* Python
-* TensorFlow / Keras ou PyTorch
-* OpenCV
-* MongoDB
-* Flask / FastAPI
-* Docker
+* **Backend & AI**: Python, TensorFlow / Keras, Scikit-Learn (SVM), OpenCV
+* **Database**: MongoDB Atlas (NoSQL), PyMongo
+* **API Framework**: Flask / FastAPI
+* **Frontend**: React.js, TailwindCSS / Vanilla CSS
+* **Deployment**: Docker
 
 ---
 
-## 📊 Pipeline du projet
+## 📊 Project Pipeline
 
-1. **Collecte des données**
-2. **Prétraitement**
-   * Redimensionnement et Normalisation
-   * Augmentation des données
-3. **Entraînement du modèle CNN hybride**
-   * Extraction de caractéristiques (Feature extraction) via un réseau (ex: ResNet50/VGG16)
-   * Classification finale via un algorithme ML (ex: SVM) ou des couches denses personnalisées
-4. **Évaluation du modèle**
-5. **Déploiement via API**
-6. **Stockage des résultats (Métadonnées) et des Images (GridFS) dans MongoDB**
+1. **Preprocessing**: Image resizing, normalization, and data augmentation.
+2. **Hybrid Model Execution**: 
+   * **CNN**: Acts as an automatic feature extractor.
+   * **SVM**: Replaces the final classification layer to enhance prediction boundaries (Normal, Benign, Malignant).
+3. **API & Database**: Secure saving of patient metadata and model predictions directly to MongoDB.
+4. **Web Interface**: Real-time display of predictions on a React dashboard for clinical review.
 
 ---
 
 ## 🧪 Installation
 
 ```bash
-git clone https://github.com/username/breast-cancer-cnn.git
-cd breast-cancer-cnn
+git clone https://github.com/your-username/breast-cancer-hybrid-cnn.git
+cd breast-cancer-hybrid-cnn
 
+# 1. Backend Installation (Python)
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
-
 pip install -r requirements.txt
+
+# 2. Frontend Installation (React)
+cd frontend
+npm install
+cd ..
 ```
 
 ---
 
-## 🚀 Utilisation
+## 🚀 Usage
 
-### ▶️ Entraîner le modèle
-
+### ▶️ 1. Train the Hybrid Model
 ```bash
 python src/models/train.py
 ```
 
-### ▶️ Lancer l’API
-
+### ▶️ 2. Start the API (Backend)
 ```bash
 python src/api/app.py
 ```
+*The API will be available at `http://localhost:5000` or `http://localhost:8000`.*
+
+### ▶️ 3. Start the Dashboard (Frontend)
+```bash
+cd frontend
+npm start
+```
+*The web interface will be accessible at `http://localhost:3000`.*
 
 ---
 
 ## 🔌 API Endpoints
 
-### 📤 Upload d’image
+### 📤 Upload Image for Prediction
 
-```
+```http
 POST /predict
 ```
-
-**Réponse :**
-
+**JSON Response:**
 ```json
 {
   "prediction": "malignant",
-  "confidence": 0.92
+  "confidence": 0.94,
+  "patient_id": "12345"
 }
 ```
 
 ---
 
-## 🗄️ Base de données (MongoDB & GridFS)
+## 🗄️ Database (MongoDB)
 
-Les images médicales pouvant dépasser la limite de 16Mo de BSON, nous utilisons **GridFS** pour le stockage des fichiers bruts/prétraités, et des documents standards pour les métadonnées.
+We utilize **MongoDB Atlas** for scalable NoSQL storage.
 
-**Structure d'un document (Collection `predictions`) :**
+**Patient/Prediction Document Structure:**
 ```json
 {
-  "image_id": "ObjectId('...')", // Référence vers le fichier dans GridFS
+  "_id": "ObjectId('...')",
+  "patient_name": "Jane Doe",
+  "age": 45,
+  "image_path": "/uploads/mammography_1.png",
   "prediction": "malignant",
-  "confidence": 0.92,
-  "model_version": "hybrid_v1.0",
-  "timestamp": "2026-04-20T18:17:54Z"
+  "confidence": 0.94,
+  "model_version": "hybrid_cnn_svm_v1",
+  "date": "2026-04-26T18:00:00Z"
 }
 ```
 
 ---
 
-## 📈 Évaluation du modèle
+## 📈 Model Evaluation
 
+The hybrid model's performance is heavily evaluated using the following metrics, with a strict emphasis on **Recall (Sensitivity)** to critically minimize false medical negatives:
 * Accuracy
-* Precision
-* Recall
+* Precision & Recall
 * F1-score
-* Matrice de confusion
+* Confusion Matrix
 
 ---
 
-## 🐳 Docker
+## 🚀 Future Enhancements
 
-```bash
-docker-compose up --build
-```
-
----
-
-## ⚠️ Limitations
-
-* Dépendance à la qualité des données
-* Besoin de validation médicale
-* Ne remplace pas un professionnel de santé
+* **Explainable AI (Grad-CAM)**: To visually highlight the affected areas on the mammogram for the physician.
+* **Full Cloud Deployment**: Scaling the architecture using AWS or GCP.
+* **Clinical Trials**: Expanding the dataset and testing in real-world diagnostic workflows.
 
 ---
 
-## 🚀 Améliorations futures
+## 📄 License
 
-* Interface web (React)
-* Intégration de modèles pré-entraînés (ResNet, EfficientNet)
-* Explicabilité (Grad-CAM)
-
----
-
-## 👨‍💻 Auteur
-
-**Oussama Es Salehy**
-Master Big Data & Intelligence Artificielle
-
----
-
-## 📄 Licence
-
-Projet académique
-
-[1]: https://www.kaggle.com/datasets/emiliovenegas1/mammography-dataset-from-inbreast-mias-and-ddsm?utm_source=chatgpt.com "Mammography Dataset from INbreast, MIAS, and DDSM"
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
